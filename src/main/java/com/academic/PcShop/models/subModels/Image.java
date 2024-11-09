@@ -1,5 +1,6 @@
-package com.academic.PcShop.models;
+package com.academic.PcShop.models.subModels;
 
+import com.academic.PcShop.models.Product;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

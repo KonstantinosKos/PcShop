@@ -1,4 +1,4 @@
-package com.academic.PcShop.models;
+package com.academic.PcShop.models.subModels;
 
 import com.academic.PcShop.models.ENUM.CardType;
 import jakarta.persistence.Embeddable;

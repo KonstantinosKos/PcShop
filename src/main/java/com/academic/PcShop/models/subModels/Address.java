@@ -1,4 +1,4 @@
-package com.academic.PcShop.models;
+package com.academic.PcShop.models.subModels;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;

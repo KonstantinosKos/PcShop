@@ -1,5 +1,7 @@
 package com.academic.PcShop.models;
 
+import com.academic.PcShop.models.subModels.Address;
+import com.academic.PcShop.models.subModels.CreditCard;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -7,6 +9,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -45,5 +50,9 @@ public class WebUser {
 
     @Embedded
     private Address address;
+
+    @OneToMany(mappedBy = "webUser", cascade = CascadeType.ALL)
+    private List<WebOrders> orders = new ArrayList<>();
+
 }
 

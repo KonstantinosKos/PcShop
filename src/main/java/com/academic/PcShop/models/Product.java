@@ -2,6 +2,7 @@ package com.academic.PcShop.models;
 
 import com.academic.PcShop.models.ENUM.Availability;
 import com.academic.PcShop.models.ENUM.Category;
+import com.academic.PcShop.models.subModels.Image;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,4 +41,8 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Image> images;
+
+    @ManyToOne
+    @JoinColumn(name = "web_order_id")
+    private WebOrders webOrder;
 }
