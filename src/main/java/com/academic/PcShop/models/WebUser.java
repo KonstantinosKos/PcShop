@@ -3,6 +3,7 @@ package com.academic.PcShop.models;
 import com.academic.PcShop.models.subModels.Address;
 import com.academic.PcShop.models.subModels.CreditCard;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -27,7 +28,7 @@ public class WebUser {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String userName;
+    private String username;
 
     @Column(nullable = false)
     private String password;
@@ -38,12 +39,13 @@ public class WebUser {
     @Column(nullable = false)
     private String lastName;
 
-    @Column(unique = true, nullable = false)
-    private String phoneNumber;
+    @Column(nullable = false, updatable = false)
+    @Digits(integer = 10,fraction = 0)
+    private Long phoneNumber;
 
     @Email
     @NotNull
-    private String eMail;
+    private String email;
 
     @Embedded
     private CreditCard creditCard;

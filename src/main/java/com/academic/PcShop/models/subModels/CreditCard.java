@@ -17,6 +17,7 @@ import java.util.Date;
 public class CreditCard {
 
     private String nameOnCard;
+    private String numberOnCard;
     private Date cardExpireDate;
     private CardType cardType;
 }
