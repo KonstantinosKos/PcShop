@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -18,6 +19,7 @@ public class WebUserService implements WebUserInterface {
 
     private static final Logger logger = LoggerFactory.getLogger(WebUserService.class);
     private final WebUserRepository webUserRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public JpaRepository<WebUser, Long> getWebUserRepository() {
         return webUserRepository;
@@ -25,6 +27,7 @@ public class WebUserService implements WebUserInterface {
 
     @Override
     public WebUser createWebUser(WebUser webUser) {
+        webUser.setPassword(passwordEncoder.encode(webUser.getPassword()));
         return webUserRepository.save(webUser);
     }
 
