@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -28,6 +27,11 @@ public class ProductService implements ProductInterface {
     @Override
     public Product createProduct(Product product) {
         return productRepository.save(product);
+    }
+
+    @Override
+    public void updateProduct(Product product) {
+        productRepository.save(product);
     }
 
     @Override

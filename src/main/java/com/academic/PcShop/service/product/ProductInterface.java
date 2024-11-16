@@ -10,6 +10,8 @@ public interface ProductInterface {
 
     Product createProduct (Product product);
 
+    void updateProduct(Product product);
+
     Product getProductByProductName(String name);
 
     Product getProductByProductNumber(UUID uuid);

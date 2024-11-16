@@ -39,8 +39,8 @@ public class WebUserController {
     }
 
     @GetMapping(params = {"phoneNumber"})
-    public ResponseEntity<WebUser> getWebUserByPhonyNumber(@RequestParam String phoneNumber) {
-        return new ResponseEntity<>(webUserService.getWebUSerByEmail(phoneNumber), HttpStatus.OK);
+    public ResponseEntity<WebUser> getWebUserByPhonyNumber(@RequestParam Long phoneNumber) {
+        return new ResponseEntity<>(webUserService.getWebUserByPhoneNumber(phoneNumber), HttpStatus.OK);
     }
 
     @GetMapping(path = "/webOrder/?email",params = {"email"})
@@ -49,8 +49,8 @@ public class WebUserController {
     }
 
     @GetMapping(path = "/webOrder/?phoneNumber",params = {"phoneNumber"})
-    public ResponseEntity<List<WebOrders>> getWebOrdersByPhoneNumber(@RequestParam String phoneNumber) {
-        return new ResponseEntity<>(webUserService.getWebOrdersByEmail(phoneNumber), HttpStatus.OK);
+    public ResponseEntity<List<WebOrders>> getWebOrdersByPhoneNumber(@RequestParam Long phoneNumber) {
+        return new ResponseEntity<>(webUserService.getWebOrderByPhoneNumber(phoneNumber), HttpStatus.OK);
     }
 
     @GetMapping(path = "/webOrder/?username",params = {"username"})

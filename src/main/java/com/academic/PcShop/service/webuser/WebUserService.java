@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +34,10 @@ public class WebUserService implements WebUserInterface {
 
     @Override
     public void updateWebUser(WebUser webUser) {
+        WebUser user = getWebUserByUsername(webUser.getUsername());
+        if (!Objects.equals(webUser.getPassword(), user.getPassword())) {
+            webUser.setPassword(passwordEncoder.encode(webUser.getPassword()));
+        }
         webUserRepository.save(webUser);
     }
 
