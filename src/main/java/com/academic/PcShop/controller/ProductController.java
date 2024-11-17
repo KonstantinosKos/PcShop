@@ -47,6 +47,7 @@ public class ProductController {
     }
 
     @DeleteMapping
+    @ResponseStatus(HttpStatus.OK)
     public void deleteProductByProductNumber(@RequestParam UUID uuid) {
         productService.deleteProductByProductNumber(uuid);
     }
