@@ -1,6 +1,12 @@
 package com.academic.PcShop.models.subModels;
 
 import com.academic.PcShop.models.Product;
+import com.academic.PcShop.models.subModels.deserializer.Base64Deserializer;
+import com.academic.PcShop.models.subModels.serializer.Base64Serializer;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +20,8 @@ public class Image {
     private Long id;
 
     @Lob
+    @JsonSerialize(using = Base64Serializer.class)
+    @JsonDeserialize(using = Base64Deserializer.class)
     private byte[] data;
 
     @ManyToOne

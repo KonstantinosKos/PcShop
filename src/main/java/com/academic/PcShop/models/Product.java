@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -44,7 +46,7 @@ public class Product {
     private Availability availability;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Image> images;
+    private List<Image> images;
 
     @ManyToOne
     @JoinColumn(name = "web_order_id")

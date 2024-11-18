@@ -2,7 +2,6 @@ package com.academic.PcShop.controller;
 
 import com.academic.PcShop.models.ENUM.Category;
 import com.academic.PcShop.models.Product;
-import com.academic.PcShop.repository.ProductRepository;
 import com.academic.PcShop.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

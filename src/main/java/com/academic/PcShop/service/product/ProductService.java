@@ -2,13 +2,16 @@ package com.academic.PcShop.service.product;
 
 import com.academic.PcShop.models.ENUM.Category;
 import com.academic.PcShop.models.Product;
+import com.academic.PcShop.models.subModels.Image;
 import com.academic.PcShop.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -24,9 +27,19 @@ public class ProductService implements ProductInterface {
         return productRepository;
     }
 
+    @Transactional
     @Override
     public Product createProduct(Product product) {
-        return productRepository.save(product);
+
+        ArrayList<Image> images = new ArrayList<>();
+
+        for (Image imageData : product.getImages()) {
+            imageData.setProduct(product);
+            images.add(imageData);
+        }
+        product.setImages(images);
+        productRepository.save(product);
+        return product;
     }
 
     @Override

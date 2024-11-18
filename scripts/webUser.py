@@ -3,12 +3,16 @@ import random
 import datetime
 import requests
 from faker import Faker
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  # Load the environment variables from the .env file
 
 # Initialize Faker
 fake = Faker()
 
 # API URL
-API_URL = "http://localhost:8080/api/webUser"
+API_URL = os.getenv('API_URL_WEB_USER')
 
 # Card Types
 CARD_TYPES = ["VISA", "MASTER_CARD"]
