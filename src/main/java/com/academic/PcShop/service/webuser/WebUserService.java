@@ -98,4 +98,13 @@ public class WebUserService implements WebUserInterface {
         }
         return Collections.emptyList();
     }
+
+    @Override
+    public WebUser getLogin(String username, String password) {
+        WebUser user = getWebUserByUsername(username);
+        if (Objects.equals(user.getUsername(), username) && passwordEncoder.matches(password, user.getPassword())){
+            return user;
+        }
+        return null;
+    }
 }

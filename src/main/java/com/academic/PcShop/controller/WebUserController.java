@@ -17,6 +17,10 @@ public class WebUserController {
 
     private final WebUserService webUserService;
 
+    @PostMapping("/user")
+    public ResponseEntity<WebUser> getLogin (@RequestParam String username, @RequestParam String password) {
+        return new ResponseEntity<>(webUserService.getLogin(username, password), HttpStatus.OK);
+    }
     @PostMapping
     public ResponseEntity<WebUser> createWebUser(@RequestBody WebUser webUser) {
         return new ResponseEntity<>(webUserService.createWebUser(webUser), HttpStatus.CREATED);

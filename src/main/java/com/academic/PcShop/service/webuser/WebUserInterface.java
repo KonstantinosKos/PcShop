@@ -25,4 +25,5 @@ public interface WebUserInterface {
 
     List<WebOrders> getWebOrdersByEmail(String email);
 
+    WebUser getLogin(String username, String password);
 }
