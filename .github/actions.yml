@@ -1,0 +1,67 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 1: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22.0.9'
+
+      # Step 2: Install Node.js dependencies
+      - name: Install Node.js dependencies
+        run: |
+          cd src/main/client/pcShop
+          npm ci
+
+      # Step 3: Build React app
+      - name: Build React app
+        run: |
+          cd src/main/client/pcShop
+          npm run build
+
+      # Step 4: Ensure the Spring Boot static resources directory exists
+      - name: Ensure static resources directory exists
+        run: |
+          if [ ! -d "src/main/resources/static" ]; then
+            mkdir -p src/main/resources/static
+            echo "Created static resources directory."
+          else
+            echo "Static folder already exists."
+          fi
+
+      # Step 5: Move React build output to Spring Boot static resources
+      - name: Move React build to static resources
+        run: |
+          cp -r src/main/client/pcShop/dist/* src/main/resources/static/
+
+      # Step 6: Clean and build the Spring Boot project using Gradle
+      - name: Build Spring Boot project
+        run: |
+          ./gradlew clean build
+
+      # Step 7: Optionally, run tests (if you have tests configured in Gradle)
+      - name: Run tests (Optional)
+        run: |
+          ./gradlew test
+
+      # Step 8: Archive the build artifact (JAR file) for download
+      - name: Archive JAR file
+        uses: actions/upload-artifact@v3
+        with:
+          name: spring-boot-artifact
+          path: build/libs/*.jar
