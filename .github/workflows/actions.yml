@@ -16,11 +16,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Step 1: Set up Node.js
+      # Step 1: Set up Node.js and Java
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '22'
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version:  '21'
 
       # Step 2: Install Node.js dependencies
       - name: Install Node.js dependencies
