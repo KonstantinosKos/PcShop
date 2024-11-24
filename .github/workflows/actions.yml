@@ -82,12 +82,12 @@ jobs:
           POSTGRES_PASSWORD: password
           POSTGRES_DB: postgres
         ports:
-          - 5432:5432  # Ensure PostgreSQL runs on its default port
+          - 5176:5432  # Ensure PostgreSQL runs on its default port
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
         
-      # Set up Java and Node.js for testing (optional)
+      # Set up Java and Node.js for testing
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
@@ -104,3 +104,16 @@ jobs:
         run: |
           cd src/main/client/pcShop
           npm ci
+
+      # Step 1: Wait for PostgreSQL to be ready
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          until pg_isready -h localhost -p 5432 -U postgres; do
+            echo "Waiting for PostgreSQL to be ready..."
+            sleep 5
+          done
+
+      # Step 2: Run tests with detailed logging
+      - name: Run tests with detailed logging
+        run: |
+          ./gradlew test --info
