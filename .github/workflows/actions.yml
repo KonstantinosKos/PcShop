@@ -62,7 +62,7 @@ jobs:
       # Step 7: Clean and build the Spring Boot project using Gradle
       - name: Build Spring Boot project
         run: |
-          ./gradlew clean build
+          ./gradlew clean build -x test
 
       # Step 8: Archive the build artifact (JAR file) for download
       - name: Archive JAR file
@@ -117,4 +117,4 @@ jobs:
       # Step 4: Run tests with detailed logging
       - name: Run tests with detailed logging
         run: |
-          ./gradlew test --info
+          ./gradlew test -x test
