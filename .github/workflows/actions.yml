@@ -25,7 +25,8 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version:  '21'
-
+          distribution: 'temurin' 
+          
       # Step 2: Install Node.js dependencies
       - name: Install Node.js dependencies
         run: |
