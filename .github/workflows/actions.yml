@@ -49,6 +49,9 @@ jobs:
         run: |
           cp -r src/main/client/pcShop/dist/* src/main/resources/static/
 
+      - name: Set execute permissions for gradlew
+        run: |
+          chmod +x ./gradlew
       # Step 6: Clean and build the Spring Boot project using Gradle
       - name: Build Spring Boot project
         run: |
