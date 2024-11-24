@@ -8,7 +8,19 @@ on:
     branches:
       - master
 
-jobs:
+jobs: 
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: postgres
+        ports:
+          - 5176:5432
+
   build:
     runs-on: ubuntu-latest
 
