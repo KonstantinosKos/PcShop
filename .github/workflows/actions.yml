@@ -9,7 +9,16 @@ on:
       - master
 
 jobs:
-  build:
+services:
+        postgres:
+          image: postgres:13
+          env:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: password
+            POSTGRES_DB: postgres
+          ports:
+            - 5432:5432
+build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
