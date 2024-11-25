@@ -70,4 +70,31 @@ jobs:
         with:
           name: spring-boot-artifact
           path: build/libs/*.jar
+          
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Wait for PostgreSQL to be ready
+      run: |
+        until pg_isready -h localhost -p 5432 -U postgres; do
+          echo "Waiting for PostgreSQL..."
+          sleep 5
+        done
+        echo "PostgreSQL is ready."
+    
+    - name: Run tests
+      run: ./gradlew test --info
+
 
