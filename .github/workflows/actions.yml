@@ -1,25 +1,15 @@
-name: Build and Deploy
-
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
-
 jobs:
-services:
-        postgres:
-          image: postgres:13
-          env:
-            POSTGRES_USER: postgres
-            POSTGRES_PASSWORD: password
-            POSTGRES_DB: postgres
-          ports:
-            - 5432:5432
-build:
+  build:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -67,7 +57,8 @@ build:
       - name: Set execute permissions for gradlew
         run: |
           chmod +x ./gradlew
-          
+
+      # Step 7: Wait for PostgreSQL to be ready
       - name: Wait for PostgreSQL to be ready
         run: |
           until pg_isready -h localhost -p 5432 -U postgres; do
@@ -75,46 +66,15 @@ build:
             sleep 5
           done
           echo "PostgreSQL is ready."
-      # Step 7: Clean and build the Spring Boot project using Gradle
+
+      # Step 8: Clean and build the Spring Boot project using Gradle
       - name: Build Spring Boot project
         run: |
           ./gradlew clean build
 
-      # Step 8: Archive the build artifact (JAR file) for download
+      # Step 9: Archive the build artifact (JAR file) for download
       - name: Archive JAR file
         uses: actions/upload-artifact@v4
         with:
           name: spring-boot-artifact
           path: build/libs/*.jar
-          
-  test:
-    runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:13
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: postgres
-        ports:
-          - 5432:5432
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Wait for PostgreSQL to be ready
-      run: |
-        until pg_isready -h localhost -p 5432 -U postgres; do
-          echo "Waiting for PostgreSQL..."
-          sleep 5
-        done
-        echo "PostgreSQL is ready."
-    # Step 6: Set execute permissions for gradlew
-    - name: Set execute permissions for gradlew
-      run: |
-          chmod +x ./gradlew
-          
-    - name: Run tests
-      run: ./gradlew test --info
-
-
