@@ -58,7 +58,14 @@ jobs:
       - name: Set execute permissions for gradlew
         run: |
           chmod +x ./gradlew
-
+          
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          until pg_isready -h localhost -p 5432 -U postgres; do
+            echo "Waiting for PostgreSQL..."
+            sleep 5
+          done
+          echo "PostgreSQL is ready."
       # Step 7: Clean and build the Spring Boot project using Gradle
       - name: Build Spring Boot project
         run: |
@@ -93,7 +100,11 @@ jobs:
           sleep 5
         done
         echo "PostgreSQL is ready."
-    
+    # Step 6: Set execute permissions for gradlew
+    - name: Set execute permissions for gradlew
+      run: |
+          chmod +x ./gradlew
+          
     - name: Run tests
       run: ./gradlew test --info
 
