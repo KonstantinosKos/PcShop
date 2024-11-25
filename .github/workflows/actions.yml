@@ -103,13 +103,25 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        
+      # Step 1: Set up Node.js and Java
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
 
-      # Step 1: Set execute permissions for gradlew
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          
+      # Step 2: Set execute permissions for gradlew
       - name: Set execute permissions for gradlew
         run: |
           chmod +x ./gradlew
 
-      # Step 2: Wait for PostgreSQL to be ready
+      # Step 3: Wait for PostgreSQL to be ready
       - name: Wait for PostgreSQL to be ready
         run: |
           until pg_isready -h localhost -p 5432 -U postgres; do
@@ -118,6 +130,6 @@ jobs:
           done
           echo "PostgreSQL is ready."
 
-      # Step 3: Run tests
+      # Step 4: Run tests
       - name: Run tests
         run: ./gradlew test --info
