@@ -11,18 +11,32 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      # Step 1: Set up Node.js
+      # Step 1: Set up Node.js and Java
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '22.0.9'
+          node-version: '22'
 
-      # Step 2: Install Node.js dependencies
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      # Step 2: Install Node.js dependencies for React app
       - name: Install Node.js dependencies
         run: |
           cd src/main/client/pcShop
@@ -49,19 +63,73 @@ jobs:
         run: |
           cp -r src/main/client/pcShop/dist/* src/main/resources/static/
 
-      # Step 6: Clean and build the Spring Boot project using Gradle
+      # Step 6: Set execute permissions for gradlew
+      - name: Set execute permissions for gradlew
+        run: |
+          chmod +x ./gradlew
+
+      # Step 7: Wait for PostgreSQL to be ready
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          until pg_isready -h localhost -p 5432 -U postgres; do
+            echo "Waiting for PostgreSQL..."
+            sleep 5
+          done
+          echo "PostgreSQL is ready."
+
+      # Step 8: Clean and build the Spring Boot project using Gradle
       - name: Build Spring Boot project
         run: |
           ./gradlew clean build
 
-      # Step 7: Optionally, run tests (if you have tests configured in Gradle)
-      - name: Run tests (Optional)
-        run: |
-          ./gradlew test
-
-      # Step 8: Archive the build artifact (JAR file) for download
+      # Step 9: Archive the build artifact (JAR file) for download
       - name: Archive JAR file
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: spring-boot-artifact
           path: build/libs/*.jar
+
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      # Step 1: Set up Node.js and Java
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          
+      # Step 2: Set execute permissions for gradlew
+      - name: Set execute permissions for gradlew
+        run: |
+          chmod +x ./gradlew
+
+      # Step 3: Wait for PostgreSQL to be ready
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          until pg_isready -h localhost -p 5432 -U postgres; do
+            echo "Waiting for PostgreSQL..."
+            sleep 5
+          done
+          echo "PostgreSQL is ready."
+
+      # Step 4: Run tests
+      - name: Run tests
+        run: ./gradlew test --info
