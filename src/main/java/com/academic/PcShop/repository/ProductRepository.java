@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     Product getProductByProductName(String productName);
 
-    Product getProductByProductNumber(UUID uuid);
+    Product getProductByUuid(UUID uuid);
 
     List<Product> getProductsByCategory(Category category);
 }

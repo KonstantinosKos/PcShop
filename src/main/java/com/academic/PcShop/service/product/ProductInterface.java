@@ -14,7 +14,7 @@ public interface ProductInterface {
 
     Product getProductByProductName(String name);
 
-    Product getProductByProductNumber(UUID uuid);
+    Product getProductByUuid(UUID uuid);
 
     List<Product> getProductsByCategory(Category category);
 

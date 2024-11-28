@@ -3,6 +3,7 @@ package com.academic.PcShop.controller;
 import com.academic.PcShop.models.ENUM.Category;
 import com.academic.PcShop.models.Product;
 import com.academic.PcShop.service.product.ProductService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,16 +32,19 @@ public class ProductController {
     }
 
     @GetMapping(params = {"name"})
+    @Transactional
     public ResponseEntity<Product> getProductByProductName(@RequestParam String name){
         return new ResponseEntity<>(productService.getProductByProductName(name), HttpStatus.OK);
     }
 
-    @GetMapping(params = {"product-number"})
-    public ResponseEntity<Product> getProductByProductNumber(@RequestParam UUID uuid) {
-        return new ResponseEntity<>(productService.getProductByProductNumber(uuid), HttpStatus.OK);
+    @GetMapping(params = {"uuid"})
+    @Transactional
+    public ResponseEntity<Product> getProductByUuid(@RequestParam UUID uuid) {
+        return new ResponseEntity<>(productService.getProductByUuid(uuid), HttpStatus.OK);
     }
 
-    @GetMapping(params = {"category"}, path = "/?category")
+    @GetMapping(params = {"category"})
+    @Transactional
     public ResponseEntity<List<Product>> getProductsByCategory(@RequestParam Category category) {
        return new ResponseEntity<>(productService.getProductsByCategory(category), HttpStatus.OK);
     }

@@ -48,6 +48,7 @@ public class ProductService implements ProductInterface {
     }
 
     @Override
+    @Transactional
     public Product getProductByProductName(String name) {
         try {
             return productRepository.getProductByProductName(name);
@@ -58,9 +59,10 @@ public class ProductService implements ProductInterface {
     }
 
     @Override
-    public Product getProductByProductNumber(UUID uuid) {
+    @Transactional
+    public Product getProductByUuid(UUID uuid) {
         try {
-            return productRepository.getProductByProductNumber(uuid);
+            return productRepository.getProductByUuid(uuid);
         } catch (Exception e) {
             logger.debug("There is no product with number: {}", uuid);
         }
@@ -68,6 +70,7 @@ public class ProductService implements ProductInterface {
     }
 
     @Override
+    @Transactional
     public List<Product> getProductsByCategory(Category category) {
         try {
             return productRepository.getProductsByCategory(category);
@@ -80,7 +83,7 @@ public class ProductService implements ProductInterface {
     @Override
     public void deleteProductByProductNumber(UUID uuid) {
         try {
-            Product product = getProductByProductNumber(uuid);
+            Product product = getProductByUuid(uuid);
             productRepository.delete(product);
         } catch (Exception e) {
             logger.debug("There is no product to delete with number: {}", uuid);

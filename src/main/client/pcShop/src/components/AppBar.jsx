@@ -6,6 +6,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import Profile from "../fragments/Profile.jsx";
+import SearchBar from "./SearchBar.jsx";
 
 const drawerWidth = 240;
 
@@ -50,10 +51,15 @@ const AppBar = ({open, handleDrawerOpen}) => {
                 >
                     <MenuIcon/>
                 </IconButton>
-                <Typography variant="h6" noWrap component="div">
+                <Typography
+                    variant="h6"
+                    noWrap
+                    component="div"
+                >
                     PcShop
                 </Typography>
-                <Profile />
+                <SearchBar />
+                <Profile/>
             </Toolbar>
         </Bar>
     )

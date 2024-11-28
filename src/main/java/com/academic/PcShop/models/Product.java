@@ -3,6 +3,7 @@ package com.academic.PcShop.models;
 import com.academic.PcShop.models.ENUM.Availability;
 import com.academic.PcShop.models.ENUM.Category;
 import com.academic.PcShop.models.subModels.Image;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,7 +29,7 @@ public class Product {
     private Long id;
 
     @Column(nullable = false, unique = true, updatable = false)
-    private UUID productNumber = UUID.randomUUID();
+    private UUID uuid = UUID.randomUUID();
 
     @Column
     private String productName;
@@ -46,6 +47,7 @@ public class Product {
     private Availability availability;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Image> images;
 
     @ManyToOne
