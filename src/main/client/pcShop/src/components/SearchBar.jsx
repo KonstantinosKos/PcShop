@@ -1,9 +1,15 @@
 import {styled} from "@mui/material/styles";
-import {alpha, InputBase} from "@mui/material";
+import {alpha, InputBase, ListItemAvatar} from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
-import {fetchSearchResults} from "../handlers/product.js";
-import {useEffect, useState} from "react";
-import {SearchDialog} from "../dialogs/SearchDialog.jsx";
+import {fetchProductByCategory, fetchProductByProductName, fetchProductByUUid,} from "../handlers/product.js";
+import {useEffect, useRef, useState} from "react";
+import {isValidCategory, isValidProductName, isValidUUID,} from "../validation/productRequestsValidation.js";
+import Typography from "@mui/material/Typography";
+import List from "@mui/material/List";
+import Avatar from "@mui/material/Avatar";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemButton from "@mui/material/ListItemButton";
+import Divider from "@mui/material/Divider";
 
 const Search = styled('div')(({theme}) => ({
     position: 'relative',
@@ -49,7 +55,17 @@ const StyledInputBase = styled(InputBase)(({theme}) => ({
 
 const SearchBar = () => {
     const [openDialog, setOpenDialog] = useState(false);  // State to control dialog visibility
-    const [products, setProducts] = useState([{}]);
+    const [value, setValue] = useState("");
+
+    const [products, setProducts] = useState([{
+        uuid: '',
+        productName: '',
+        price: 0,
+        category: '',
+        description: '',
+        availability: '',
+        images: []
+    }]);
     const debounce = (func, delay) => {
         let timer;
         return (...args) => {
@@ -58,41 +74,125 @@ const SearchBar = () => {
         };
     };
 
-    const handleSearchResult = (r) => {
-        r.forEach(response => {
-            if (response && response.ok) {
-                response.json().then(data => {
-                    // setProducts([...products, data]);
-                    setProducts([data]);
-                });
-            }
-        });
-    }
-
     const handleSearch = debounce((value) => {
-        console.log(value);
-        if (value.trim()) {
-            fetchSearchResults(value).then(r => handleSearchResult(r));
+        if (!value || typeof value !== 'string') {
+            return;
+        }
+
+        if (isValidUUID(value)) {
+            fetchProductByUUid(value)
+                .then(response => handleSearchByUuid(response));
+        } else if (isValidCategory(value)) {
+            const normalizedCategory = value.toUpperCase().replace(/\s+/g, '_');
+            fetchProductByCategory(normalizedCategory)
+                .then(response => handleSearchByCategory(response));
+        } else if (isValidProductName(value)) {
+            fetchProductByProductName(value)
+                .then(response => handleSearchByProductName(response));
         }
     }, 500);
 
-    const handleDialogClose = () => {
-        setOpenDialog(false);  // Close the dialog when the user clicks 'Close'
+    const handleSearchByUuid = (response) => {
+        if (response) {
+            setProducts([response.data]);
+            setOpenDialog(true)
+        }
+    }
+
+    const handleSearchByCategory = (response) => {
+        if (response) {
+            setProducts(response.data);
+            setOpenDialog(true)
+        }
+    }
+
+    const handleSearchByProductName = (response) => {
+        if (response) {
+            setProducts([response.data]);
+            setOpenDialog(true)
+        }
+    }
+
+    const dropdownRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setOpenDialog(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+    const handleClicked = (e, result) => {
+
     }
 
     return (
         <>
-        <Search sx={{position: 'fixed', right: 80, top: 10}}>
-            <SearchIconWrapper>
-                <SearchIcon/>
-            </SearchIconWrapper>
-            <StyledInputBase
-                placeholder="Search…"
-                inputProps={{'aria-label': 'search'}}
-                onChange={e => handleSearch(e.target.value)}
-            />
-        </Search>
-        <SearchDialog open={openDialog} handleDialogClose={handleDialogClose} products={products}/>
+            <Search sx={{position: 'fixed', right: 80, top: 10}}>
+                <SearchIconWrapper>
+                    <SearchIcon/>
+                </SearchIconWrapper>
+                <StyledInputBase
+                    placeholder="Search…"
+                    inputProps={{'aria-label': 'search'}}
+                    onChange={(e) => {
+                        setValue(e.target.value);
+                        handleSearch(e.target.value);
+                    }}
+                    value={value}
+                />
+            </Search>
+            {openDialog && (
+                <List ref={dropdownRef}
+                      sx={{
+                          maxWidth: 360,
+                          bgcolor: 'background.paper',
+                          position: 'absolute',
+                          top: '55px',
+                          right: '100px',
+                          borderRadius: "10%",
+                          padding: '0'
+                      }}>
+                    {products.map((result, index) => (
+                        <div key={index}>
+                            <ListItemButton
+                                sx={{
+                                    display: 'flex',
+                                }}
+                                onClick={(e) => handleClicked(e, result)}
+                            >
+                                <ListItemAvatar>
+                                    <Avatar alt="Product" src={`data:image/jpeg;base64,${result.images[0].data}`}/>
+                                </ListItemAvatar>
+                                <ListItemText
+                                    primary={
+                                        <Typography
+                                            component="span"
+                                            variant="body2"
+                                            sx={{
+                                                color: 'text.primary',
+                                                display: 'inline',
+                                            }}
+                                        >
+                                            {result.productName}
+                                        </Typography>
+                                    }
+                                />
+                            </ListItemButton>
+                            <Divider
+                                sx={{
+                                    width: '80%',
+                                    marginLeft: '10%',
+                                }}/>
+                        </div>
+                    ))}
+                </List>
+            )}
         </>
     )
 }

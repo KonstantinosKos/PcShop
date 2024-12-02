@@ -32,7 +32,7 @@ const Profile = () => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                <MenuItem onClick={handleClose}>Settings</MenuItem>
+                <MenuItem >Settings</MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
         </Stack>

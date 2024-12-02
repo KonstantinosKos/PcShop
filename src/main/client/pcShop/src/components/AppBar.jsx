@@ -7,6 +7,8 @@ import Typography from "@mui/material/Typography";
 import * as React from "react";
 import Profile from "../fragments/Profile.jsx";
 import SearchBar from "./SearchBar.jsx";
+import {useNavigate} from "react-router-dom";
+import Box from "@mui/material/Box";
 
 const drawerWidth = 240;
 
@@ -34,6 +36,10 @@ const Bar = styled(MuiAppBar, {
 }));
 
 const AppBar = ({open, handleDrawerOpen}) => {
+    const navigate = useNavigate();
+     const handleClick = () => {
+         navigate('/');
+     }
     return (
         <Bar position="fixed" open={open}>
             <Toolbar>
@@ -51,13 +57,21 @@ const AppBar = ({open, handleDrawerOpen}) => {
                 >
                     <MenuIcon/>
                 </IconButton>
-                <Typography
-                    variant="h6"
-                    noWrap
+                <Box
                     component="div"
+                    onClick={handleClick}
+                    sx={{
+                        fontSize: '1.25rem',
+                        fontWeight: 'bold',
+                        cursor: 'pointer',
+                        textDecoration: 'none',
+                        '&:hover': {
+                            color: 'rgba(241,241,246,0.65)',
+                        },
+                    }}
                 >
                     PcShop
-                </Typography>
+                </Box>
                 <SearchBar />
                 <Profile/>
             </Toolbar>

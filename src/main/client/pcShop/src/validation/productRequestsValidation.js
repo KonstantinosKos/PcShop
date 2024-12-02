@@ -3,7 +3,6 @@ export const isValidUUID = (input) => {
     return uuidPattern.test(input);
 };
 
-// Helper function to check if input matches a category
 export const  isValidCategory = (input) => {
     const normalizedInput = input.toUpperCase().replace(/\s+/g, '_');
     const validCategories = ['PC_LAPTOPS', 'GAMING', 'MOBILE_TABLETS', 'IMAGE_SOUND', 'HARDWARE', 'PRINTERS'];
@@ -12,5 +11,5 @@ export const  isValidCategory = (input) => {
 
 // Helper function to check if input matches a product name (basic validation)
 export const  isValidProductName = (input) => {
-    return input.length > 2;
+    return input.includes(' ');
 };

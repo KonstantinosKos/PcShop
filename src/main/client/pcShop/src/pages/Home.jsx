@@ -7,9 +7,10 @@ import LoginSignupDialog from "../dialogs/LoginSignupDialog.jsx";
 import AppBar from "../components/AppBar.jsx";
 import DrawerMenu from "../components/DrawerMenu.jsx";
 import DrawerHeader from "../components/DrawerHeader.jsx";
+import {Outlet} from "react-router-dom";
 
 
-export default function MiniDrawer() {
+export default function Home() {
     const [open, setOpen] = useState(false);
 
     const handleDrawerOpen = () => {
@@ -34,11 +35,13 @@ export default function MiniDrawer() {
                 open={open}
                 handleDrawerClose={handleDrawerClose}
             />
+
             <Box component="main" sx={{flexGrow: 1, p: 3}}>
                 <DrawerHeader/>
                 <Typography sx={{marginBottom: 2}}>
                     {/*my future content*/}
                 </Typography>
+                <Outlet/>
             </Box>
         </Box>
     );

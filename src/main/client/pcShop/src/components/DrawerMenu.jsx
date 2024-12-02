@@ -7,11 +7,15 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import ListItemText from "@mui/material/ListItemText";
 import * as React from "react";
-
+import DevicesOtherIcon from '@mui/icons-material/DevicesOther';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import ElectricalServicesIcon from '@mui/icons-material/ElectricalServices';
+import ContactMailIcon from '@mui/icons-material/ContactMail';
+import InfoIcon from '@mui/icons-material/Info';
+import LogoutIcon from '@mui/icons-material/Logout';
+import {useNavigate} from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -47,127 +51,140 @@ const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})
                 props: ({open}) => open,
                 style: {
                     ...openedMixin(theme),
-                    '& .MuiDrawer-paper': openedMixin(theme),
+                    '& .MuiDrawer-paper': openedMixin(theme)
                 },
             },
             {
                 props: ({open}) => !open,
                 style: {
                     ...closedMixin(theme),
-                    '& .MuiDrawer-paper': closedMixin(theme),
+                    '& .MuiDrawer-paper': closedMixin(theme)
                 },
             },
-        ],
+        ]
     }),
 );
 
 const DrawerMenu = ({handleDrawerClose, open}) => {
+
+    const navigate  = useNavigate();
+
+    const handleLogout = () => {
+        sessionStorage.removeItem('user');
+        window.location.reload();
+    }
+
+    const icons = [
+        <DevicesOtherIcon/>,
+        <ShoppingCartIcon/>,
+        <ElectricalServicesIcon/>,
+        <ContactMailIcon/>,
+        <InfoIcon/>
+    ];
+
+    const handleDrawerOptions = (e) => {
+        switch (e) {
+            case 0: navigate(`/category`); break;
+            case 1: navigate("/cart"); break;
+            case 2: navigate('/services'); break;
+            case 3: navigate('/contact-us'); break;
+            case 4: navigate('/about-us'); break;
+            default: navigate("/");
+        }
+    }
+
     return (
         <Drawer variant="permanent" open={open}>
             <DrawerHeader handleDrawerClose={handleDrawerClose}/>
             <Divider/>
             <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+                {['Products', 'Cart', 'Services', 'Community', 'About us'].map((text, index) => (
                     <ListItem key={text} disablePadding sx={{display: 'block'}}>
                         <ListItemButton
-                            sx={[
-                                {
-                                    minHeight: 48,
-                                    px: 2.5,
+                            sx={[{
+                                minHeight: 48,
+                                px: 2.5,
+                            }, open ? {
+                                    justifyContent: 'initial',
+                                }
+                                : {
+                                    justifyContent: 'center',
                                 },
-                                open
-                                    ? {
-                                        justifyContent: 'initial',
-                                    }
-                                    : {
-                                        justifyContent: 'center',
-                                    },
                             ]}
+                            onClick={() => handleDrawerOptions(index)}
                         >
                             <ListItemIcon
-                                sx={[
-                                    {
-                                        minWidth: 0,
-                                        justifyContent: 'center',
-                                    },
-                                    open
-                                        ? {
-                                            mr: 3,
-                                        }
-                                        : {
-                                            mr: 'auto',
-                                        },
-                                ]}
+                                sx={[{
+                                    minWidth: 0,
+                                    justifyContent: 'center',
+                                },
+                                    open ? {
+                                        mr: 3,
+                                    } : {
+                                        mr: 'auto',
+                                    },]}
                             >
-                                {index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}
+                                {icons[index]}
                             </ListItemIcon>
                             <ListItemText
                                 primary={text}
                                 sx={[
-                                    open
-                                        ? {
-                                            opacity: 1,
-                                        }
-                                        : {
-                                            opacity: 0,
-                                        },
+                                    open ? {
+                                        opacity: 1,
+                                    } : {
+                                        opacity: 0,
+                                    },
                                 ]}
                             />
                         </ListItemButton>
+                        <Divider/>
                     </ListItem>
                 ))}
             </List>
-            <Divider/>
-            <List>
-                {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                    <ListItem key={text} disablePadding sx={{display: 'block'}}>
-                        <ListItemButton
-                            sx={[
-                                {
-                                    minHeight: 48,
-                                    px: 2.5,
-                                },
-                                open
-                                    ? {
-                                        justifyContent: 'initial',
-                                    }
-                                    : {
-                                        justifyContent: 'center',
-                                    },
-                            ]}
+            <List sx={{
+                mt: 'auto',
+                padding: '0'
+            }}>
+                <Divider/>
+                <ListItem disablePadding sx={{display: 'block'}}>
+                    <ListItemButton
+                        sx={[{
+                            minHeight: 48,
+                            px: 2.5,
+                        }, open ? {
+                                justifyContent: 'initial',
+                            }
+                            : {
+                                justifyContent: 'center',
+                            },
+                        ]}
+                        onClick={handleLogout}
+                    >
+                        <ListItemIcon
+                            sx={[{
+                                minWidth: 0,
+                                justifyContent: 'center',
+                            },
+                                open ? {
+                                    mr: 3,
+                                } : {
+                                    mr: 'auto',
+                                },]}
                         >
-                            <ListItemIcon
-                                sx={[
-                                    {
-                                        minWidth: 0,
-                                        justifyContent: 'center',
-                                    },
-                                    open
-                                        ? {
-                                            mr: 3,
-                                        }
-                                        : {
-                                            mr: 'auto',
-                                        },
-                                ]}
-                            >
-                                {index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}
-                            </ListItemIcon>
-                            <ListItemText
-                                primary={text}
-                                sx={[
-                                    open
-                                        ? {
-                                            opacity: 1,
-                                        }
-                                        : {
-                                            opacity: 0,
-                                        },
-                                ]}
-                            />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
+                            <LogoutIcon/>
+                        </ListItemIcon>
+                        <ListItemText
+                            primary={"Logout"}
+                            sx={[
+                                open ? {
+                                    opacity: 1,
+                                } : {
+                                    opacity: 0,
+                                },
+                            ]}
+                        />
+                    </ListItemButton>
+                </ListItem>
             </List>
         </Drawer>
     )
