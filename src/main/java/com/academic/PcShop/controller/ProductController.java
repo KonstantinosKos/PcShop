@@ -31,19 +31,19 @@ public class ProductController {
         productService.updateProduct(product);
     }
 
-    @GetMapping(params = {"name"})
+    @GetMapping(path = {"/search-name"})
     @Transactional
     public ResponseEntity<Product> getProductByProductName(@RequestParam String name){
         return new ResponseEntity<>(productService.getProductByProductName(name), HttpStatus.OK);
     }
 
-    @GetMapping(params = {"uuid"})
+    @GetMapping(path = {"/search-uuid"})
     @Transactional
     public ResponseEntity<Product> getProductByUuid(@RequestParam UUID uuid) {
         return new ResponseEntity<>(productService.getProductByUuid(uuid), HttpStatus.OK);
     }
 
-    @GetMapping(params = {"category"})
+    @GetMapping(path = {"/search-category"})
     @Transactional
     public ResponseEntity<List<Product>> getProductsByCategory(@RequestParam Category category) {
        return new ResponseEntity<>(productService.getProductsByCategory(category), HttpStatus.OK);

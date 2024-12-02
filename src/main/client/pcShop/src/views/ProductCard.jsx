@@ -11,6 +11,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useTheme } from "@mui/material/styles";
 import EuroIcon from "@mui/icons-material/Euro";
 import Divider from "@mui/material/Divider";
+import CircleIcon from '@mui/icons-material/Circle';
+import {Tooltip} from "@mui/material";
 
 export const ProductCard = () => {
     const { productName } = useParams();
@@ -29,6 +31,22 @@ export const ProductCard = () => {
                 setLoading(false);
             });
     }, [productName]);
+
+    const availability = [
+        { status: 'AVAILABLE', icon: <CircleIcon sx={{ color: 'green' }} />, tooltip: 'Available' },
+        { status: 'NOT_AVAILABLE', icon: <CircleIcon sx={{ color: 'red' }} />, tooltip: 'Not Available' },
+        { status: 'ORDER', icon: <CircleIcon sx={{ color: 'orange' }} /> , tooltip: 'Order' },
+        { status: 'PRE_ORDER', icon: <CircleIcon sx={{ color: 'orange' }} />, tooltip: 'Pre Order' },
+    ];
+
+    const renderAvailabilityIcon = (status) => {
+        const matchedStatus = availability.find(item => item.status === status);
+        return matchedStatus ? (
+            <Tooltip title={matchedStatus.tooltip} arrow>
+                {matchedStatus.icon}
+            </Tooltip>
+        ) : null;
+    };
 
     if (loading) {
         return (
@@ -68,7 +86,6 @@ export const ProductCard = () => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-
                 backgroundColor: 'rgba(202,205,227,0.65)',
                 padding: "1rem",
             }}
@@ -80,19 +97,29 @@ export const ProductCard = () => {
                     image={`data:image/jpeg;base64,${product.images?.[0]?.data || ""}`}
                     alt={product.productName || "Product"}
                 />
-                <Divider/>
+                <Divider />
                 <CardContent>
                     <Typography variant="h4" component="div" gutterBottom>
                         {product.productName || "Unnamed Product"}
                     </Typography>
-                    <Divider/>
+                    <Divider />
                     <Typography variant="body1" color="text.secondary">
-                        <b>Description:</b><br/> {product.description || "No description available."}
+                        <b>Description:</b><br /> {product.description || "No description available."}
                     </Typography>
-                    <Typography variant="body1" color="text.secondary">
-                        <b>Availability:</b>  {product.availability || "No description available."}
-                    </Typography>
-                    <Divider/>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            marginTop: theme.spacing(2),
+                            gap: theme.spacing(1),
+                        }}
+                    >
+                        <Typography variant="body1" color="text.secondary">
+                            <b>Availability:</b>
+                        </Typography>
+                        {renderAvailabilityIcon(product.availability)}
+                    </Box>
+                    <Divider />
                     <Box
                         sx={{
                             display: "flex",
