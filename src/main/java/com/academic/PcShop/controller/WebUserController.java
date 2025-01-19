@@ -2,6 +2,7 @@ package com.academic.PcShop.controller;
 
 import com.academic.PcShop.models.WebOrders;
 import com.academic.PcShop.models.WebUser;
+import com.academic.PcShop.models.subModels.CreditCard;
 import com.academic.PcShop.service.webuser.WebUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("api/webUser")
@@ -18,9 +20,10 @@ public class WebUserController {
     private final WebUserService webUserService;
 
     @PostMapping("/user")
-    public ResponseEntity<WebUser> getLogin (@RequestParam String username, @RequestParam String password) {
+    public ResponseEntity<WebUser> getLogin(@RequestParam String username, @RequestParam String password) {
         return new ResponseEntity<>(webUserService.getLogin(username, password), HttpStatus.OK);
     }
+
     @PostMapping
     public ResponseEntity<WebUser> createWebUser(@RequestBody WebUser webUser) {
         return new ResponseEntity<>(webUserService.createWebUser(webUser), HttpStatus.CREATED);
@@ -47,18 +50,18 @@ public class WebUserController {
         return new ResponseEntity<>(webUserService.getWebUserByPhoneNumber(phoneNumber), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/webOrder/?email",params = {"email"})
-    public ResponseEntity<List<WebOrders>> getWebOrdersByEmail (@RequestParam String email) {
+    @GetMapping(path = "/webOrder/?email", params = {"email"})
+    public ResponseEntity<List<WebOrders>> getWebOrdersByEmail(@RequestParam String email) {
         return new ResponseEntity<>(webUserService.getWebOrdersByEmail(email), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/webOrder/?phoneNumber",params = {"phoneNumber"})
+    @GetMapping(path = "/webOrder/?phoneNumber", params = {"phoneNumber"})
     public ResponseEntity<List<WebOrders>> getWebOrdersByPhoneNumber(@RequestParam Long phoneNumber) {
         return new ResponseEntity<>(webUserService.getWebOrderByPhoneNumber(phoneNumber), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/webOrder/?username",params = {"username"})
-    public ResponseEntity<List<WebOrders>> getWebOrdersByUsername (@RequestParam String username) {
+    @GetMapping(path = "/webOrder/?username", params = {"username"})
+    public ResponseEntity<List<WebOrders>> getWebOrdersByUsername(@RequestParam String username) {
         return new ResponseEntity<>(webUserService.getWebOrdersByUsername(username), HttpStatus.OK);
     }
 
@@ -66,5 +69,15 @@ public class WebUserController {
     @ResponseStatus(HttpStatus.OK)
     public void deleteWebUserByUsername(@RequestParam String username) {
         webUserService.deleteWebUserByUsername(username);
+    }
+
+    @PutMapping("/add-credit-card")
+    public ResponseEntity<Set<CreditCard>> addCreditCard(@RequestBody CreditCard creditCard, @RequestParam Long id) {
+        return new ResponseEntity<>(webUserService.addCreditCard(creditCard, id), HttpStatus.OK);
+    }
+
+    @GetMapping("/get-credit-card")
+    public ResponseEntity<Set<CreditCard>> getCreditCard(@RequestParam Long id) {
+        return new ResponseEntity<>(webUserService.getCreditCard(id), HttpStatus.OK);
     }
 }

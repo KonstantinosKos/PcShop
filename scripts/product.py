@@ -22,7 +22,7 @@ PRODUCTS = [
                    "description": "High-precision gaming mouse with customizable buttons.",
                    "availability": "AVAILABLE",
                    "images": [],
-                   "webOrder": None
+                   
               },
                {
                    "uuid": str(uuid.uuid4()),
@@ -32,7 +32,7 @@ PRODUCTS = [
                    "description": "Mechanical keyboard with customizable RGB lighting.",
                    "availability": "PRE_ORDER",
                    "images": [],
-                   "webOrder": None
+                   
                },
                {
                    "uuid": str(uuid.uuid4()),
@@ -42,7 +42,7 @@ PRODUCTS = [
                    "description": "Comfortable headset with 7.1 surround sound for gamers.",
                    "availability": "ORDER",
                    "images": [],
-                   "webOrder": None
+                   
                },
                {
                    "uuid": str(uuid.uuid4()),
@@ -52,7 +52,7 @@ PRODUCTS = [
                    "description": "Premium laptop for professionals and creators.",
                    "availability": "AVAILABLE",
                    "images": [],
-                   "webOrder": None
+                   
                },
                {
                    "uuid": str(uuid.uuid4()),
@@ -62,7 +62,7 @@ PRODUCTS = [
                    "description": "High-performance laptop with Apple silicon for professionals.",
                    "availability": "PRE_ORDER",
                    "images": [],
-                   "webOrder": None
+                   
                },
                {
                    "uuid": str(uuid.uuid4()),
@@ -72,7 +72,7 @@ PRODUCTS = [
                    "description": "Ultra-lightweight business laptop with excellent performance.",
                    "availability": "ORDER",
                    "images": [],
-                   "webOrder": None
+                   
                },
                {
                    "uuid": str(uuid.uuid4()),
@@ -82,7 +82,7 @@ PRODUCTS = [
                    "description": "High-performance tablet with an S Pen for creativity.",
                    "availability": "AVAILABLE",
                    "images": [],
-                   "webOrder": None
+                   
                },
                {
                    "uuid": str(uuid.uuid4()),
@@ -92,7 +92,7 @@ PRODUCTS = [
                    "description": "Powerful tablet with M2 chip and advanced display.",
                    "availability": "PRE_ORDER",
                    "images": [],
-                   "webOrder": None
+                   
                },
                {
                    "uuid": str(uuid.uuid4()),
@@ -102,7 +102,7 @@ PRODUCTS = [
                    "description": "2-in-1 tablet and laptop for versatile productivity.",
                    "availability": "ORDER",
                    "images": [],
-                   "webOrder": None
+                   
                },
                {
                    "uuid": str(uuid.uuid4()),
@@ -112,7 +112,7 @@ PRODUCTS = [
                    "description": "Noise-canceling wireless headphones with superior sound quality.",
                    "availability": "AVAILABLE",
                    "images": [],
-                   "webOrder": None
+                   
                },
                {
                    "uuid": str(uuid.uuid4()),
@@ -122,7 +122,7 @@ PRODUCTS = [
                    "description": "Portable Bluetooth speaker with deep sound and long battery life.",
                    "availability": "PRE_ORDER",
                    "images": [],
-                   "webOrder": None
+                   
                },
                {
                    "uuid": str(uuid.uuid4()),
@@ -132,7 +132,7 @@ PRODUCTS = [
                    "description": "Powerful portable speaker with dynamic light show.",
                    "availability": "ORDER",
                    "images": [],
-                   "webOrder": None
+                   
                },
                {
                    "uuid": str(uuid.uuid4()),
@@ -142,7 +142,7 @@ PRODUCTS = [
                    "description": "Powerful GPU for gaming and content creation.",
                    "availability": "AVAILABLE",
                    "images": [],
-                   "webOrder": None
+                   
                },
                {
                    "uuid": str(uuid.uuid4()),
@@ -152,7 +152,7 @@ PRODUCTS = [
                    "description": "High-performance CPU for extreme multitasking.",
                    "availability": "PRE_ORDER",
                    "images": [],
-                   "webOrder": None
+                   
                },
                {
                    "uuid": str(uuid.uuid4()),
@@ -162,7 +162,7 @@ PRODUCTS = [
                    "description": "Fast and reliable memory for gaming and creative work.",
                    "availability": "ORDER",
                    "images": [],
-                   "webOrder": None
+                   
                },
                {
                    "uuid": str(uuid.uuid4()),
@@ -172,7 +172,7 @@ PRODUCTS = [
                    "description": "Efficient monochrome laser printer for small offices.",
                    "availability": "AVAILABLE",
                    "images": [],
-                   "webOrder": None
+                   
                },
                {
                    "uuid": str(uuid.uuid4()),
@@ -182,7 +182,7 @@ PRODUCTS = [
                    "description": "All-in-one inkjet printer with great photo printing quality.",
                    "availability": "PRE_ORDER",
                    "images": [],
-                   "webOrder": None
+                   
                },
                {
                    "uuid": str(uuid.uuid4()),
@@ -191,9 +191,7 @@ PRODUCTS = [
                    "category": "PRINTERS",
                    "description": "Cartridge-free printer with high-capacity ink tanks.",
                    "availability": "ORDER",
-                   "images": [],
-                   "webOrder": None
-               }
+                   "images": []               }
            ]
 
 # Fetch image URLs using Google Custom Search API
@@ -254,7 +252,7 @@ def send_product_to_api(product):
     try:
         # Make sure 'images' are base64 encoded
         if 'images' in product and product['images']:
-            response = requests.post(API_URL, json=product)
+            response = requests.post(API_URL, json=product, verify=False )
             if response.status_code == 201:
                 print(f"Product {product['productName']} created successfully!")
             else:

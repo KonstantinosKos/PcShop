@@ -1,15 +1,15 @@
 package com.academic.PcShop.service.weborder;
 
-import com.academic.PcShop.models.Product;
+import com.academic.PcShop.models.OrderItems;
 import com.academic.PcShop.models.WebOrders;
 import com.academic.PcShop.repository.WebOrdersRepository;
-import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,11 +26,14 @@ public class WebOrdersService implements WebOrdersInterface {
 
     @Override
     public WebOrders createWebOrder(WebOrders webOrders) {
+        if (webOrders.getUuid() == null) {
+            webOrders.setUuid(UUID.randomUUID());
+        }
         return webOrdersRepository.save(webOrders);
     }
 
     @Override
-    public void updateWebOrder(WebOrders webOrders){
+    public void updateWebOrder(WebOrders webOrders) {
         webOrdersRepository.save(webOrders);
     }
 
@@ -45,12 +48,12 @@ public class WebOrdersService implements WebOrdersInterface {
     }
 
     @Override
-    public List<Product> getProductsByWebOrderUuid(UUID uuid) {
+    public List<OrderItems> getProductsByWebOrderUuid(UUID uuid) {
         try {
             WebOrders order = getWebOrder(uuid);
             return order.getOrderItems();
         } catch (Exception e) {
-            logger.debug("There are no items in order: {}", uuid );
+            logger.debug("There are no items in order: {}", uuid);
         }
         return Collections.emptyList();
     }

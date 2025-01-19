@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.query.Order;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,8 +30,8 @@ public class WebOrders {
     @ManyToOne
     private WebUser webUser;
 
-    @OneToMany(mappedBy = "webOrder", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Product> orderItems;
+    @OneToMany
+    private List<OrderItems> orderItems;
 
     @Column
     private double totalPrice;

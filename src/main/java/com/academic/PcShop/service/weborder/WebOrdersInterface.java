@@ -1,6 +1,6 @@
 package com.academic.PcShop.service.weborder;
 
-import com.academic.PcShop.models.Product;
+import com.academic.PcShop.models.OrderItems;
 import com.academic.PcShop.models.WebOrders;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public interface WebOrdersInterface {
 
     WebOrders getWebOrder (UUID uuid);
 
-    List<Product> getProductsByWebOrderUuid(UUID uuid);
+    List<OrderItems> getProductsByWebOrderUuid(UUID uuid);
 
     void deleteWebOrderByUuid(UUID uuid);
 

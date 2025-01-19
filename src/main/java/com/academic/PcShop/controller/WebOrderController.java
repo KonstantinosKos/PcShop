@@ -1,5 +1,6 @@
 package com.academic.PcShop.controller;
 
+import com.academic.PcShop.models.OrderItems;
 import com.academic.PcShop.models.Product;
 import com.academic.PcShop.models.WebOrders;
 import com.academic.PcShop.service.weborder.WebOrdersService;
@@ -35,7 +36,7 @@ public class WebOrderController {
     }
 
     @GetMapping(path = "/list", params = {"order-number"})
-    public ResponseEntity<List<Product>> getProductsByWebOrderUuid(@RequestParam UUID uuid) {
+    public ResponseEntity<List<OrderItems>> getProductsByWebOrderUuid(@RequestParam UUID uuid) {
         return new ResponseEntity<>(webOrdersService.getProductsByWebOrderUuid(uuid), HttpStatus.OK);
     }
 

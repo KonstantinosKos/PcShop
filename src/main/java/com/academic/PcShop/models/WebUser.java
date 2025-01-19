@@ -13,6 +13,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 @Getter
@@ -47,8 +48,9 @@ public class WebUser {
     @NotNull
     private String email;
 
-    @Embedded
-    private CreditCard creditCard;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "web_user_id")
+    private Set<CreditCard> creditCard;
 
     @Embedded
     private Address address;

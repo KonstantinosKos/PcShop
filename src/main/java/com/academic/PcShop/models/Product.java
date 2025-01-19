@@ -50,7 +50,4 @@ public class Product {
     @JsonManagedReference
     private List<Image> images;
 
-    @ManyToOne
-    @JoinColumn(name = "web_order_id")
-    private WebOrders webOrder;
 }

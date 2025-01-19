@@ -2,8 +2,10 @@ package com.academic.PcShop.service.webuser;
 
 import com.academic.PcShop.models.WebOrders;
 import com.academic.PcShop.models.WebUser;
+import com.academic.PcShop.models.subModels.CreditCard;
 
 import java.util.List;
+import java.util.Set;
 
 public interface WebUserInterface {
 
@@ -26,4 +28,8 @@ public interface WebUserInterface {
     List<WebOrders> getWebOrdersByEmail(String email);
 
     WebUser getLogin(String username, String password);
+
+    Set<CreditCard> addCreditCard(CreditCard creditCard, Long id );
+
+    Set<CreditCard> getCreditCard(Long id);
 }

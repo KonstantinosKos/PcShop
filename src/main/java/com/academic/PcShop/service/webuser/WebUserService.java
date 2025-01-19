@@ -1,7 +1,9 @@
 package com.academic.PcShop.service.webuser;
 
+import com.academic.PcShop.models.ENUM.CardType;
 import com.academic.PcShop.models.WebOrders;
 import com.academic.PcShop.models.WebUser;
+import com.academic.PcShop.models.subModels.CreditCard;
 import com.academic.PcShop.repository.WebUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -102,9 +105,26 @@ public class WebUserService implements WebUserInterface {
     @Override
     public WebUser getLogin(String username, String password) {
         WebUser user = getWebUserByUsername(username);
-        if (Objects.equals(user.getUsername(), username) && passwordEncoder.matches(password, user.getPassword())){
+        if (Objects.equals(user.getUsername(), username) && passwordEncoder.matches(password, user.getPassword())) {
             return user;
         }
         return null;
+    }
+
+    @Override
+    public Set<CreditCard> addCreditCard(CreditCard creditCard, Long id) {
+        WebUser user = webUserRepository.findById(id).orElseThrow();
+        user.getCreditCard().stream()
+                .filter(card -> card.getCardType() == CardType.UNKNOWN)
+                .findFirst().ifPresent(unknownCard -> user.getCreditCard().remove(unknownCard));
+        user.getCreditCard().add(creditCard);
+        webUserRepository.save(user);
+        return user.getCreditCard();
+    }
+
+    @Override
+    public Set<CreditCard> getCreditCard(Long id) {
+        WebUser user = webUserRepository.findById(id).orElseThrow();
+        return user.getCreditCard();
     }
 }
