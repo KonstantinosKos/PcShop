@@ -3,10 +3,15 @@ import Stack from '@mui/material/Stack';
 import {useState} from "react";
 import {Menu, MenuItem} from "@mui/material";
 import useUser from "../customHook/useUser.jsx";
+import {useNavigate} from "react-router-dom";
+import useCart from "../customHook/useCart.jsx";
 
 const Profile = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const {setSessionUser} = useUser();
+    const navigate = useNavigate();
+    const {clearCart} = useCart();
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -16,8 +21,10 @@ const Profile = () => {
     };
 
     const handleLogout = () => {
-        setSessionUser({username: '', password: ''});
+        clearCart();
+        setSessionUser({username: '', password: '', id: ''});
         sessionStorage.removeItem('user');
+        navigate('/');
         window.location.reload();
     }
 
@@ -32,7 +39,7 @@ const Profile = () => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                <MenuItem >Settings</MenuItem>
+                <MenuItem>Settings</MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
         </Stack>

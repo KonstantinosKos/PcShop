@@ -10,12 +10,13 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import * as React from "react";
 import DevicesOtherIcon from '@mui/icons-material/DevicesOther';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ElectricalServicesIcon from '@mui/icons-material/ElectricalServices';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
 import InfoIcon from '@mui/icons-material/Info';
 import LogoutIcon from '@mui/icons-material/Logout';
 import {useNavigate} from "react-router-dom";
+import NotificationBadge from "./NotificationBadge.jsx";
+import useCart from "../customHook/useCart.jsx";
 
 const drawerWidth = 240;
 
@@ -66,17 +67,19 @@ const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})
 );
 
 const DrawerMenu = ({handleDrawerClose, open}) => {
-
-    const navigate  = useNavigate();
+    const {clearCart} = useCart();
+    const navigate = useNavigate();
 
     const handleLogout = () => {
+        clearCart();
         sessionStorage.removeItem('user');
+        navigate('/');
         window.location.reload();
     }
 
     const icons = [
         <DevicesOtherIcon/>,
-        <ShoppingCartIcon/>,
+        <NotificationBadge/>,
         <ElectricalServicesIcon/>,
         <ContactMailIcon/>,
         <InfoIcon/>
@@ -84,12 +87,23 @@ const DrawerMenu = ({handleDrawerClose, open}) => {
 
     const handleDrawerOptions = (e) => {
         switch (e) {
-            case 0: navigate(`/category`); break;
-            case 1: navigate("/cart"); break;
-            case 2: navigate('/services'); break;
-            case 3: navigate('/contact-us'); break;
-            case 4: navigate('/about-us'); break;
-            default: navigate("/");
+            case 0:
+                navigate(`/category`);
+                break;
+            case 1:
+                navigate("/cart");
+                break;
+            case 2:
+                navigate('/services');
+                break;
+            case 3:
+                navigate('/contact-us');
+                break;
+            case 4:
+                navigate('/about-us');
+                break;
+            default:
+                navigate("/");
         }
     }
 

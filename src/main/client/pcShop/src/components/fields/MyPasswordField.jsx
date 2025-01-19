@@ -29,7 +29,6 @@ const MyPasswordField = ({label, type, value, onChange, required, autoFocus, nam
             required={required}
             autoFocus={autoFocus}
             margin="dense"
-            variant="standard"
             slotProps={{
                 input: {
                     endAdornment:

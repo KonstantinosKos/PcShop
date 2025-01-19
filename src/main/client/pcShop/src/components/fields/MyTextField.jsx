@@ -11,7 +11,6 @@ const MyTextField = ({ label, type, value, onChange, required, autoFocus, name }
             autoFocus={autoFocus}
             name={name}
             margin="dense"
-            variant="standard"
         />
     );
 };

@@ -12,6 +12,10 @@ import {Services} from "./views/Services.jsx";
 import {Contact} from "./views/Contact.jsx";
 import ProductsPage from "./views/ProductsPage.jsx";
 import {ProductCard} from "./views/ProductCard.jsx";
+import {CartProvider} from "./context/CartContext.jsx";
+import {CheckoutPage} from "./views/CheckoutPage.jsx";
+
+import * as React from 'react';
 
 function App() {
     return (
@@ -19,20 +23,23 @@ function App() {
             <ThemeProvider theme={theme}>
                 <SnackbarProvider maxSnack={3}>
                     <Router>
-                        <CssBaseline/> {/* Resets CSS to follow Material Design baseline */}
-                        <Container>
-                            <Routes>
-                                <Route path="/" element={<Home/>}>
-                                    <Route path="/category" element={<Category/>}/>
-                                    <Route path="/category/:category" element={<ProductsPage />} />
-                                    <Route path="/category/:category/:productName" element={<ProductCard />} />
-                                    <Route path="/cart" element={<Cart/>}/>
-                                    <Route path="/services" element={<Services/>}/>
-                                    <Route path="/contact-us" element={<Contact/>}/>
-                                    <Route path="/about-us" element={<About/>}/>
-                                </Route>
-                            </Routes>
-                        </Container>
+                        <CartProvider>
+                            <CssBaseline/> {/* Resets CSS to follow Material Design baseline */}
+                            <Container>
+                                <Routes>
+                                    <Route path="/" element={<Home/>}>
+                                        <Route path="/category" element={<Category/>}/>
+                                        <Route path="/category/:category" element={<ProductsPage/>}/>
+                                        <Route path="/category/:category/:productName" element={<ProductCard/>}/>
+                                        <Route path="/cart" element={<Cart/>}/>
+                                        <Route path="/cart/:checkout" element={<CheckoutPage/>}/>
+                                        <Route path="/services" element={<Services/>}/>
+                                        <Route path="/contact-us" element={<Contact/>}/>
+                                        <Route path="/about-us" element={<About/>}/>
+                                    </Route>
+                                </Routes>
+                            </Container>
+                        </CartProvider>
                     </Router>
                 </SnackbarProvider>
             </ThemeProvider>

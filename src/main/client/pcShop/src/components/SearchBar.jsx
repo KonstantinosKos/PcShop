@@ -10,6 +10,7 @@ import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemButton from "@mui/material/ListItemButton";
 import Divider from "@mui/material/Divider";
+import {useNavigate} from "react-router-dom";
 
 const Search = styled('div')(({theme}) => ({
     position: 'relative',
@@ -128,9 +129,14 @@ const SearchBar = () => {
     }, []);
 
     const handleClicked = (e, result) => {
+        navigate(
+            `/category/${encodeURIComponent(result.category)}/${encodeURIComponent(result.productName)}`
+        );
+        setOpenDialog(false);
+    };
 
-    }
 
+    const navigate = useNavigate();
     return (
         <>
             <Search sx={{position: 'fixed', right: 80, top: 10}}>

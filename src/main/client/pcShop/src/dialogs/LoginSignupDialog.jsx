@@ -36,12 +36,12 @@ export default function LoginSignupDialog() {
             number: '',
             zipCode: ''
         },
-        creditCard: {
+        creditCard: [{
             nameOnCard: '',
             numberOnCard: '',
             cardExpireDate: '',
             cardType: '',
-        },
+        }],
     });
 
     const handleClose = () => {
@@ -75,8 +75,8 @@ export default function LoginSignupDialog() {
 
     const handleNotification = (data, statusCode) => {
         if (statusCode === 200) {
-            setSessionUser(data);
-            sessionStorage.setItem('user', JSON.stringify(sessionUser));
+            sessionStorage.setItem('user', JSON.stringify(data));
+            window.location.reload()
             setOpen(false);
             handleClose();
             enqueueSnackbar('Welcome ' + sessionUser.username, {variant: 'success'});
@@ -88,8 +88,10 @@ export default function LoginSignupDialog() {
 
     const handleNotificationOnCreation = (data, statusCode) => {
         if (statusCode === 201) {
-            setSessionUser(data.username, data.password);
+            sessionStorage.setItem('user', JSON.stringify(data));
+            window.location.reload()
             enqueueSnackbar('Welcome ' + user.username, {variant: 'success'});
+            handleClose();
         }
     }
 
@@ -157,7 +159,6 @@ export default function LoginSignupDialog() {
                         flexDirection: 'column',
                     }}>
                         <MyTextField
-                            required
                             autoFocus={true}
                             label="Username"
                             type="text"

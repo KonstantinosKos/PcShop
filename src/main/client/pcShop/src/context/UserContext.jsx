@@ -6,7 +6,7 @@ export const UserProvider = ({children}) => {
     const getUser = JSON.parse(sessionStorage.getItem('user'));
 
     const [sessionUser, setSessionUser] = useState(
-        getUser || {username: '', password: ''}
+        getUser || {username: '', password: '', id: ''}
     );
 
     return (
